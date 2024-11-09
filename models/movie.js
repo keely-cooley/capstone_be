@@ -41,8 +41,8 @@ Movie.init(
     },
     rating: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        required: true,
+        allowNull: true,
+        required: false,
     }
   },
   {
