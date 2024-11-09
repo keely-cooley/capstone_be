@@ -4,14 +4,13 @@ const app = express();
 const port = 8083;
 require("dotenv").config();
 
-let dbConnect = require('./dbConnect')
+let dbConnect = require("./dbConnect");
 
 // const corsOptions = {
 //   origin: "http://localhost:5173",
 // };
 
 // app.use(cors(corsOptions));
-
 
 app.get("/", (req, res) => {
   res.send("Hello World");
@@ -22,17 +21,19 @@ app.use(express.json());
 
 const userRoutes = require("./routes/userRoutes");
 // const userPostRoutes = require("./routes/userPostRoutes");
-// const movieRoutes = require("./routes/movieroutes");
+const movieRoutes = require("./routes/movieRoutes");
 // const landingPostRoutes = require("./routes/landingPostRoutes");
 
 // //ROUTES
 //http://localhost:8083/
 app.use("/", userRoutes);
+
 // //http:localhost:8083/userPosts
 // app.use("/userPosts", userPostRoutes);
-// //http://localhost:8083/movies
-// //landing page movie array only
-// app.use("/movies", movieRoutes);
+
+//http://localhost:8083/movies
+app.use("/movies", movieRoutes);
+
 // //https://localhost:8083/landingPost
 // //landing page posts only
 // app.use("/landingPost", landingPostRoutes);
