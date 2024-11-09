@@ -3,7 +3,7 @@ const Models = require("../models")
 
 //LOGIN, find user and check password
 const loginUser = (req, res) => {
-    const { emailId } = req.body;
+    const { emailId, password } = req.body;
 
     console.log('loginController - login user', req.body)
 
