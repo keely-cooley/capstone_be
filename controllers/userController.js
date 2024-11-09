@@ -3,12 +3,12 @@ const Models = require("../models")
 
 //LOGIN, find user and check password
 const loginUser = (req, res) => {
-    const { emailId, password } = req.body;
+    const { email, password } = req.body;
 
     console.log('userController - loginUser', req.body)
 
-    //find user by emailId
-    Models.User.findOne({ where: { emailId } })
+    //find user by email
+    Models.User.findOne({ where: { email } })
     .then((foundUser) => {
         if (foundUser) {
             //check if password is correct
@@ -29,19 +29,19 @@ const loginUser = (req, res) => {
 
 //SIGNUP - create new user if username and email does not exist
 const signupUser = (req, res) => {
-    const { username, emailId, password } = req.body;
+    const { username, email, password } = req.body;
 
     console.log('userController - signupUser')
   
     // check if email exists
-    Models.User.findOne({ where: { emailId } })
+    Models.User.findOne({ where: { email } })
       .then((existingUser) => {
         if (existingUser) {
           return res.status(400).json({ result: "That email already in use." });
         }
   
         // create new user
-        Models.User.create({ username, emailId, password })
+        Models.User.create({ username, email, password })
           .then((newUser) => {
             // welcome message to greet on successful signup
             res.status(201).json({

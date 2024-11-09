@@ -12,10 +12,6 @@ let dbConnect = require('./dbConnect')
 
 // app.use(cors(corsOptions));
 
-// const authRoutes = require("./routes/authRoutes");
-// const userPostRoutes = require("./routes/userPostRoutes");
-// const movieRoutes = require("./routes/movieroutes");
-// const landingPostRoutes = require("./routes/landingPostRoutes");
 
 app.get("/", (req, res) => {
   res.send("Hello World");
@@ -24,9 +20,14 @@ app.get("/", (req, res) => {
 // app.use("/", express.static("public"));
 app.use(express.json());
 
+const userRoutes = require("./routes/userRoutes");
+// const userPostRoutes = require("./routes/userPostRoutes");
+// const movieRoutes = require("./routes/movieroutes");
+// const landingPostRoutes = require("./routes/landingPostRoutes");
+
 // //ROUTES
-// //http://localhost:8083/
-// app.use("/", authRoutes);
+//http://localhost:8083/
+app.use("/", userRoutes);
 // //http:localhost:8083/userPosts
 // app.use("/userPosts", userPostRoutes);
 // //http://localhost:8083/movies
