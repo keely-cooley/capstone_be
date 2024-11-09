@@ -5,7 +5,7 @@ const Models = require("../models")
 const loginUser = (req, res) => {
     const { emailId, password } = req.body;
 
-    console.log('loginController - login user', req.body)
+    console.log('userController - loginUser', req.body)
 
     //find user by emailId
     Models.User.findOne({ where: { emailId } })
@@ -22,7 +22,7 @@ const loginUser = (req, res) => {
         }
     })
     .catch((err) => {
-        console.log(err);
+        console.log('userController - loginUser:', err);
         res.status(500).json({ result: "Error", error: err.message });
     });
 };
@@ -30,12 +30,14 @@ const loginUser = (req, res) => {
 //SIGNUP - create new user if username and email does not exist
 const signupUser = (req, res) => {
     const { username, emailId, password } = req.body;
+
+    console.log('userController - signupUser')
   
     // check if email exists
     Models.User.findOne({ where: { emailId } })
       .then((existingUser) => {
         if (existingUser) {
-          return res.status(400).json({ result: "Email already in use." });
+          return res.status(400).json({ result: "That email already in use." });
         }
   
         // create new user
@@ -48,7 +50,7 @@ const signupUser = (req, res) => {
             });
           })
           .catch((err) => {
-            console.log(err);
+            console.log('userController - signupUser:', err);
             res.status(500).json({ 
                 result: "Error", 
                 error: `Failed to create user. Please try again later. Error: ${err.message}` ,
