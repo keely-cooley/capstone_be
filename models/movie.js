@@ -43,6 +43,11 @@ Movie.init(
         type: DataTypes.INTEGER,
         allowNull: true,
         required: false,
+    },
+    img: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        required: false
     }
   },
   {
