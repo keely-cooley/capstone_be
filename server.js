@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
 app.use(express.json());
 
 const userRoutes = require("./routes/userRoutes");
-// const userPostRoutes = require("./routes/userPostRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
 const movieRoutes = require("./routes/movieRoutes");
 // const landingPostRoutes = require("./routes/landingPostRoutes");
 
@@ -28,8 +28,8 @@ const movieRoutes = require("./routes/movieRoutes");
 //http://localhost:8083/
 app.use("/", userRoutes);
 
-// //http:localhost:8083/userPosts
-// app.use("/userPosts", userPostRoutes);
+//http:localhost:8083/reviews
+app.use("/reviews", reviewRoutes);
 
 //http://localhost:8083/movies
 app.use("/movies", movieRoutes);

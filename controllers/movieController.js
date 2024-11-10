@@ -98,12 +98,10 @@ const createMovie = (req, res) => {
     })
     .catch((err) => {
       console.log("movieController - createMovie:", err);
-      res
-        .status(500)
-        .json({
-          result: "Error",
-          error: `Failed to create movie. Error: ${err.message}`,
-        });
+      res.status(500).json({
+        result: "Error",
+        error: `Failed to create movie. Error: ${err.message}`,
+      });
     });
 };
 
@@ -137,12 +135,10 @@ const updateMovie = (req, res) => {
     })
     .catch((err) => {
       console.log("movieController - updateMovie:", err);
-      res
-        .status(500)
-        .json({
-          result: "Error",
-          error: `Failed to update movie. Error: ${err.message}`,
-        });
+      res.status(500).json({
+        result: "Error",
+        error: `Failed to update movie. Error: ${err.message}`,
+      });
     });
 };
 
@@ -165,12 +161,10 @@ const deleteMovie = (req, res) => {
     })
     .catch((err) => {
       console.log("movieController - deleteMovie:", err);
-      res
-        .status(500)
-        .json({
-          result: "Error",
-          error: `Failed to delete movie. Error: ${err.message}`,
-        });
+      res.status(500).json({
+        result: "Error",
+        error: `Failed to delete movie. Error: ${err.message}`,
+      });
     });
 };
 
