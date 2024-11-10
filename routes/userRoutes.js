@@ -12,4 +12,9 @@ userRouter.post("/signup", (req, res) => {
   Controllers.userController.signupUser(req, res);
 });
 
+//GET http://localhost:8083/users
+userRouter.get("/users", (req, res) => {
+  Controllers.userController.getAllUsers(req, res);
+});
+
 module.exports = userRouter;
