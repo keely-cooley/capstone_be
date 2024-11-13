@@ -45,9 +45,9 @@ Movie.init(
         required: false,
     },
     img: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        required: false
+        type: DataTypes.STRING(1000),
+        allowNull: false,
+        required: true
     }
   },
   {

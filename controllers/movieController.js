@@ -77,19 +77,19 @@ const getMovieDetailsByDirector = (req, res) => {
 
 // POST create a new movie
 const createMovie = (req, res) => {
-  const { title, released, genre, director, duration } = req.body;
+  const { title, released, genre, director, duration, img } = req.body;
 
   console.log("movieController - createMovie", req.body);
 
   // validate
-  if (!title || !released || !genre || !director || !duration) {
+  if (!title || !released || !genre || !director || !duration || !img ) {
     return res
       .status(400)
       .json({ result: "Error", message: "All fields are required" });
   }
 
   // Create new movie
-  Models.Movie.create({ title, released, genre, director, duration })
+  Models.Movie.create({ title, released, genre, director, duration, img })
     .then((newMovie) => {
       res.status(201).json({
         result: `Movie ${newMovie.title} added successfully!`,
@@ -108,12 +108,12 @@ const createMovie = (req, res) => {
 // PUT update movie by ID
 const updateMovie = (req, res) => {
   const movieId = parseInt(req.params.id);
-  const { title, released, genre, director, duration } = req.body;
+  const { title, released, genre, director, duration, img } = req.body;
 
   console.log("movieController - updateMovie", req.body);
 
   // Validate input
-  if (!title || !released || !genre || !director || !duration) {
+  if (!title || !released || !genre || !director || !duration || !img) {
     return res
       .status(400)
       .json({ result: "Error", message: "All fields are required" });
@@ -121,7 +121,7 @@ const updateMovie = (req, res) => {
 
   // Update movie
   Models.Movie.update(
-    { title, released, genre, director, duration },
+    { title, released, genre, director, duration, img },
     { where: { id: movieId } }
   )
     .then(([affectedRows]) => {
