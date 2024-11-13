@@ -4,6 +4,7 @@ const Controllers = require("../controllers");
 
 //POST http://localhost:8083/login
 userRouter.post("/login", (req, res) => {
+  console.log("login", req.body)
   Controllers.userController.loginUser(req, res);
 });
 

@@ -1,16 +1,16 @@
 const express = require("express");
-// const cors = require("cors");
+const cors = require("cors");
 const app = express();
 const port = 8083;
 require("dotenv").config();
 
 let dbConnect = require("./dbConnect");
 
-// const corsOptions = {
-//   origin: "http://localhost:5173",
-// };
+const corsOptions = {
+  origin: "http://localhost:5173",
+};
 
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.get("/", (req, res) => {
   res.send("Hello World");
