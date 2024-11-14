@@ -2,18 +2,86 @@
 const Models = require("../models");
 
 // GET all reviews
-const getReviews = (req, res) => {
+const getReviews = async (req, res) => {
   console.log("reviewController - getReviews");
 
-  Models.Review.findAll()
-    .then((reviews) => {
-      res.status(200).json(reviews);
-    })
-    .catch((err) => {
-      console.log("reviewController - getReviews:", err);
-      res.status(500).json({ result: "Error", error: err.message });
-    });
+  try {
+    // wait for all reviews to come in
+    const reviews = await Models.Review.findAll();
+
+    // Initialize an array for updated reviews
+    let updatedReviews = [];
+
+    // Loop through reviews and fetch user data
+    for (const element of reviews) {
+      try {
+        // Find the user based on userId
+        const user = await Models.User.findOne({
+          where: { id: element.userId },
+        });
+
+        if (user) {
+          // Create an updated review with the username
+          let updatedReview = {
+            ...element.toJSON(), // Convert Sequelize model to plain object
+            username: user.username,
+          };
+
+          // Push the updated review to the array
+          updatedReviews.push(updatedReview);
+        } else {
+          // If user is not found, return a 404 error and exit
+          return res.status(404).json({ result: "User not found" });
+        }
+      } catch (err) {
+        console.log("reviewController - getUserById:", err);
+        return res.status(500).json({ result: "Error", error: err.message });
+      }
+    }
+
+    // Send the updated reviews as a response
+    res.status(200).json(updatedReviews);
+  } catch (err) {
+    console.log("reviewController - getReviews:", err);
+    res.status(500).json({ result: "Error", error: err.message });
+  }
 };
+
+// const getReviews = async (req, res) => {
+//   console.log("reviewController - getReviews");
+
+//   Models.Review.findAll()
+//     .then(async (reviews) => {
+//       let updatedReviews = [];
+
+//       await Promise.all(
+//         reviews.forEach((element) => {
+//           // console.log(element.userId)
+//           Models.User.findOne({ where: { id: element.userId } })
+//             .then((user) => {
+//               if (user) {
+//                 let updatedReview = {
+//                   ...element,
+//                   username: user.username,
+//                 };
+//                 updatedReviews.push(updatedReview);
+//               } else {
+//                 res.status(404).json({ result: "User not found" });
+//               }
+//             })
+//             .catch((err) => {
+//               console.log("reviewController - getUserById:", err);
+//               res.status(500).json({ result: "Error", error: err.message });
+//             });
+//         })
+//       )
+//       res.status(200).json(updatedReviews);
+//     })
+//     .catch((err) => {
+//       console.log("reviewController - getReviews:", err);
+//       res.status(500).json({ result: "Error", error: err.message });
+//     });
+// };
 
 // GET review by ID
 const getReviewById = (req, res) => {
