@@ -1,0 +1,98 @@
+[
+    {
+        "id": 1,
+        "title": "On The Waterfront",
+        "released": 1954,
+        "genre": "Drama, Thriller",
+        "director": "Elia Kazan",
+        "duration": 108,
+        "rating": null,
+        "img": "https://upload.wikimedia.org/wikipedia/commons/e/ee/On_the_Waterfront_%281954_poster%29.jpg",
+        "createdAt": "2024-11-13T12:07:33.000Z",
+        "updatedAt": "2024-11-13T12:39:25.000Z"
+    },
+    {
+        "id": 2,
+        "title": "A Streetcar Named Desire",
+        "released": 1951,
+        "genre": "Drama",
+        "director": "Elia Kazan",
+        "duration": 122,
+        "rating": null,
+        "img": "https://m.media-amazon.com/images/M/MV5BNTdmZDY1ODQtNzFjYy00MGM4LWJmNDItN2MxMmQ2OTgxZGNmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+        "createdAt": "2024-11-13T12:19:34.000Z",
+        "updatedAt": "2024-11-13T12:44:15.000Z"
+    },
+    {
+        "id": 3,
+        "title": "Dog Day Afternoon",
+        "released": 1975,
+        "genre": "Crime Thriller",
+        "director": "Sidney Lumet",
+        "duration": 124,
+        "rating": null,
+        "img": "https://s3.amazonaws.com/nightjarprod/content/uploads/sites/192/2023/06/27144016/3mYy8sLQWMS8tVHcac6T8sWHA6D.jpg",
+        "createdAt": "2024-11-13T12:21:38.000Z",
+        "updatedAt": "2024-11-13T12:40:49.000Z"
+    },
+    {
+        "id": 4,
+        "title": "Roadrunner",
+        "released": 2021,
+        "genre": "Documentary",
+        "director": "Morgan Neville",
+        "duration": 119,
+        "rating": null,
+        "img": "https://m.media-amazon.com/images/M/MV5BZTM1MDk5M2EtNWVhYS00ZmFiLWJhNTQtM2RkMTBmOGZhY2M0XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+        "createdAt": "2024-11-13T12:23:40.000Z",
+        "updatedAt": "2024-11-13T12:41:31.000Z"
+    },
+    {
+        "id": 5,
+        "title": "Arthur",
+        "released": 1981,
+        "genre": "Comedy Romance",
+        "director": "Steve Gordon",
+        "duration": 117,
+        "rating": null,
+        "img": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQez91JDvpKr0AnQbLKsrk9lycdZWTiueSwK4RknIXSW80UP4XDR_zBa9H7PsQVghNwjGh9",
+        "createdAt": "2024-11-13T12:26:22.000Z",
+        "updatedAt": "2024-11-13T12:45:48.000Z"
+    },
+    {
+        "id": 6,
+        "title": "Arthur",
+        "released": 2011,
+        "genre": "Comedy Romance",
+        "director": "Jason Winer",
+        "duration": 110,
+        "rating": null,
+        "img": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcR5g2OM-amK1sgQLuNddHV8KC4msF3fbilFGyXWWqHheinLBxPkaTmJbFop3sbX3t8nB_SF",
+        "createdAt": "2024-11-13T12:43:12.000Z",
+        "updatedAt": "2024-11-13T12:43:12.000Z"
+    },
+    {
+        "id": 7,
+        "title": "Back To School",
+        "released": 1986,
+        "genre": "Comedy",
+        "director": "Alan Metter",
+        "duration": 96,
+        "rating": null,
+        "img": "https://img.rgstatic.com/content/movie/2e59b3d3-41c2-4287-a931-fdc25ce3f8f8/poster-500.jpg",
+        "createdAt": "2024-11-13T12:47:54.000Z",
+        "updatedAt": "2024-11-13T12:47:54.000Z"
+    },
+    {
+        "id": 8,
+        "title": "Boogie Nights",
+        "released": 1997,
+        "genre": "Comedy Drama",
+        "director": "Paul Thomas Anderson",
+        "duration": 153,
+        "rating": null,
+        "img": "https://m.media-amazon.com/images/M/MV5BOTFmZmE4OTMtNDYxNi00MmZmLThlYjktMmExMzMwY2YzOTFiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+        "createdAt": "2024-11-13T12:49:20.000Z",
+        "updatedAt": "2024-11-13T12:49:20.000Z"
+    }
+]

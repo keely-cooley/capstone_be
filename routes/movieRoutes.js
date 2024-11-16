@@ -14,6 +14,12 @@ movieRouter.get("/:id", (req, res) => {
   Controllers.movieController.getMovieDetailsById(req, res);
 });
 
+// GET movie by Id, if does not exist add to database
+//GET http://localhost:8083/movies/validate/:id
+movieRouter.get("/validate/:id", (req, res) => {
+  Controllers.movieController.validateAddMovie(req, res);
+});
+
 // GET movie by title
 // GET http://localhost:8083/movies/title/:title
 movieRouter.get("/title/:title", (req, res) => {
