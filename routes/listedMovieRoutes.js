@@ -14,6 +14,12 @@ listedMovieRouter.get("/:id", (req, res) => {
   Controllers.listedMovieController.getListedMovieDetailsById(req, res);
 });
 
+// GET listedMovie by user ID
+// GET http://localhost:8083/listedMovies/user/:id
+listedMovieRouter.get("/user/:id", (req, res) => {
+  Controllers.listedMovieController.getListedMovieDetailsByUserId(req, res);
+});
+
 // GET listedMovie by title
 // GET http://localhost:8083/listedMovies/title/:title
 listedMovieRouter.get("/title/:title", (req, res) => {

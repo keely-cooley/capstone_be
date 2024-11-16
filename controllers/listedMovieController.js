@@ -35,6 +35,47 @@ const getListedMovieDetailsById = (req, res) => {
     });
 };
 
+// GET listedMovie by userId
+const getListedMovieDetailsByUserId = async (req, res) => {
+  const listedMovieUserId = parseInt(req.params.id);
+
+  console.log("listedMovieController - getListedMovieDetailsByUserId:", req.params);
+  try{
+    const listedMovies = await Models.ListedMovie.findAll({ where: { userId: listedMovieUserId } })
+    let movieDetails = [];
+    for (const element of listedMovies) {
+      try {
+        const movie = await Models.Movie.findOne({
+          where: { id: element.movieId },
+        });
+        if (movie) {
+          movieDetails.push(movie.toJSON())
+        }
+      } catch (error) {
+        console.log("listedMovieController - getMovieById:", error);
+        return res.status(500).json({ result: "Error", error: error.message });
+      }
+    }
+    res.status(200).json(movieDetails);
+  } catch (error) {
+    console.log("listedMovieController - get all listed movies by user id:", error);
+    return res.status(500).json({ result: "Error", error: error.message });
+  }
+
+  // // Models.ListedMovie.findAll({ where: { userId: listedMovieUserId } })
+  // //   .then((listedMovies) => {
+  //     if (listedMovies) {
+  //       res.status(200).json(listedMovies);
+  //     } else {
+  //       res.status(404).json({ result: "ListedMovie not found" });
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.log("listedMovieController - getListedMovieDetailsById:", err);
+  //     res.status(500).json({ result: "Error", error: err.message });
+    // });
+};
+
 // GET listedMovie by title
 const getListedMovieDetailsByTitle = (req, res) => {
   const listedMovieTitle = req.params.title;
@@ -186,6 +227,7 @@ const deleteListedMovie = (req, res) => {
 module.exports = {
   getListedMovies,
   getListedMovieDetailsById,
+  getListedMovieDetailsByUserId,
   getListedMovieDetailsByTitle,
   getListedMovieDetailsByDirector,
   createListedMovie,
