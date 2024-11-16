@@ -1,0 +1,179 @@
+"use strict";
+const Models = require("../models");
+
+// GET all listedMovies
+const getListedMovies = (req, res) => {
+  console.log("listedMovieController - getListedMovies");
+
+  Models.ListedMovie.findAll()
+    .then((listedMovies) => {
+      res.status(200).json(listedMovies);
+    })
+    .catch((err) => {
+      console.log("listedMovieController - getListedMovies:", err);
+      res.status(500).json({ result: "Error", error: err.message });
+    });
+};
+
+// GET listedMovie by ID
+const getListedMovieDetailsById = (req, res) => {
+  const listedMovieId = parseInt(req.params.id);
+
+  console.log("listedMovieController - getListedMovieDetailsById:", req.params);
+
+  Models.ListedMovie.findOne({ where: { id: listedMovieId } })
+    .then((listedMovie) => {
+      if (listedMovie) {
+        res.status(200).json(listedMovie);
+      } else {
+        res.status(404).json({ result: "ListedMovie not found" });
+      }
+    })
+    .catch((err) => {
+      console.log("listedMovieController - getListedMovieDetailsById:", err);
+      res.status(500).json({ result: "Error", error: err.message });
+    });
+};
+
+// GET listedMovie by title
+const getListedMovieDetailsByTitle = (req, res) => {
+  const listedMovieTitle = req.params.title;
+
+  console.log("listedMovieController - getListedMovieDetailsByTitle:", req.params);
+
+  Models.ListedMovie.findOne({ where: { title: listedMovieTitle } })
+    .then((listedMovie) => {
+      if (listedMovie) {
+        res.status(200).json(listedMovie);
+      } else {
+        res.status(404).json({ result: "ListedMovie not found" });
+      }
+    })
+    .catch((err) => {
+      console.log("listedMovieController - getListedMovieDetailsByTitle:", err);
+      res.status(500).json({ result: "Error", error: err.message });
+    });
+};
+
+// GET listedMovies by director
+const getListedMovieDetailsByDirector = (req, res) => {
+  const listedMovieDirector = req.params.director;
+
+  console.log("listedMovieController - getListedMovieDetailsByDirector:", req.params);
+
+  Models.ListedMovie.findAll({ where: { director: listedMovieDirector } })
+    .then((listedMovies) => {
+      if (listedMovies.length > 0) {
+        res.status(200).json(listedMovies);
+      } else {
+        res.status(404).json({ result: "No listedMovies found for this director" });
+      }
+    })
+    .catch((err) => {
+      console.log("listedMovieController - getListedMovieDetailsByDirector:", err);
+      res.status(500).json({ result: "Error", error: err.message });
+    });
+};
+
+// POST create a new listedMovie
+const createListedMovie = (req, res) => {
+  const { title, released, genre, director, duration, img } = req.body;
+
+  console.log("listedMovieController - createListedMovie", req.body);
+
+  // validate
+  if (!title || !released || !genre || !director || !duration || !img ) {
+    return res
+      .status(400)
+      .json({ result: "Error", message: "All fields are required" });
+  }
+
+  // Create new listedMovie
+  Models.ListedMovie.create({ title, released, genre, director, duration, img })
+    .then((newListedMovie) => {
+      res.status(201).json({
+        result: `ListedMovie ${newListedMovie.title} added successfully!`,
+        data: newListedMovie,
+      });
+    })
+    .catch((err) => {
+      console.log("listedMovieController - createListedMovie:", err);
+      res.status(500).json({
+        result: "Error",
+        error: `Failed to create listedMovie. Error: ${err.message}`,
+      });
+    });
+};
+
+// PUT update listedMovie by ID
+const updateListedMovie = (req, res) => {
+  const listedMovieId = parseInt(req.params.id);
+  const { title, released, genre, director, duration, img } = req.body;
+
+  console.log("listedMovieController - updateListedMovie", req.body);
+
+  // Validate input
+  if (!title || !released || !genre || !director || !duration || !img) {
+    return res
+      .status(400)
+      .json({ result: "Error", message: "All fields are required" });
+  }
+
+  // Update listedMovie
+  Models.ListedMovie.update(
+    { title, released, genre, director, duration, img },
+    { where: { id: listedMovieId } }
+  )
+    .then(([affectedRows]) => {
+      if (affectedRows > 0) {
+        res
+          .status(200)
+          .json({ result: `ListedMovie with ID ${listedMovieId} updated successfully!` });
+      } else {
+        res.status(404).json({ result: "ListedMovie not found" });
+      }
+    })
+    .catch((err) => {
+      console.log("listedMovieController - updateListedMovie:", err);
+      res.status(500).json({
+        result: "Error",
+        error: `Failed to update listedMovie. Error: ${err.message}`,
+      });
+    });
+};
+
+// DELETE listedMovie by ID
+const deleteListedMovie = (req, res) => {
+  const listedMovieId = parseInt(req.params.id);
+
+  console.log("listedMovieController - deleteListedMovie:", req.params);
+
+  // Delete listedMovie
+  Models.ListedMovie.destroy({ where: { id: listedMovieId } })
+    .then((deletedRows) => {
+      if (deletedRows > 0) {
+        res
+          .status(200)
+          .json({ result: `ListedMovie with ID ${listedMovieId} deleted successfully!` });
+      } else {
+        res.status(404).json({ result: "ListedMovie not found" });
+      }
+    })
+    .catch((err) => {
+      console.log("listedMovieController - deleteListedMovie:", err);
+      res.status(500).json({
+        result: "Error",
+        error: `Failed to delete listedMovie. Error: ${err.message}`,
+      });
+    });
+};
+
+module.exports = {
+  getListedMovies,
+  getListedMovieDetailsById,
+  getListedMovieDetailsByTitle,
+  getListedMovieDetailsByDirector,
+  createListedMovie,
+  updateListedMovie,
+  deleteListedMovie,
+};
