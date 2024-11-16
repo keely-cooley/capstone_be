@@ -39,7 +39,10 @@ const getListedMovieDetailsById = (req, res) => {
 const getListedMovieDetailsByTitle = (req, res) => {
   const listedMovieTitle = req.params.title;
 
-  console.log("listedMovieController - getListedMovieDetailsByTitle:", req.params);
+  console.log(
+    "listedMovieController - getListedMovieDetailsByTitle:",
+    req.params
+  );
 
   Models.ListedMovie.findOne({ where: { title: listedMovieTitle } })
     .then((listedMovie) => {
@@ -59,40 +62,48 @@ const getListedMovieDetailsByTitle = (req, res) => {
 const getListedMovieDetailsByDirector = (req, res) => {
   const listedMovieDirector = req.params.director;
 
-  console.log("listedMovieController - getListedMovieDetailsByDirector:", req.params);
+  console.log(
+    "listedMovieController - getListedMovieDetailsByDirector:",
+    req.params
+  );
 
   Models.ListedMovie.findAll({ where: { director: listedMovieDirector } })
     .then((listedMovies) => {
       if (listedMovies.length > 0) {
         res.status(200).json(listedMovies);
       } else {
-        res.status(404).json({ result: "No listedMovies found for this director" });
+        res
+          .status(404)
+          .json({ result: "No listedMovies found for this director" });
       }
     })
     .catch((err) => {
-      console.log("listedMovieController - getListedMovieDetailsByDirector:", err);
+      console.log(
+        "listedMovieController - getListedMovieDetailsByDirector:",
+        err
+      );
       res.status(500).json({ result: "Error", error: err.message });
     });
 };
 
 // POST create a new listedMovie
 const createListedMovie = (req, res) => {
-  const { title, released, genre, director, duration, img } = req.body;
+  const { userId, movieId } = req.body;
 
   console.log("listedMovieController - createListedMovie", req.body);
 
   // validate
-  if (!title || !released || !genre || !director || !duration || !img ) {
+  if (!userId || !movieId) {
     return res
       .status(400)
       .json({ result: "Error", message: "All fields are required" });
   }
 
   // Create new listedMovie
-  Models.ListedMovie.create({ title, released, genre, director, duration, img })
+  Models.ListedMovie.create({ userId, movieId })
     .then((newListedMovie) => {
       res.status(201).json({
-        result: `ListedMovie ${newListedMovie.title} added successfully!`,
+        result: `ListedMovie added successfully!`,
         data: newListedMovie,
       });
     })
@@ -108,12 +119,12 @@ const createListedMovie = (req, res) => {
 // PUT update listedMovie by ID
 const updateListedMovie = (req, res) => {
   const listedMovieId = parseInt(req.params.id);
-  const { title, released, genre, director, duration, img } = req.body;
+  const { userId, movieId } = req.body;
 
   console.log("listedMovieController - updateListedMovie", req.body);
 
   // Validate input
-  if (!title || !released || !genre || !director || !duration || !img) {
+  if (!userId || !movieId) {
     return res
       .status(400)
       .json({ result: "Error", message: "All fields are required" });
@@ -121,14 +132,16 @@ const updateListedMovie = (req, res) => {
 
   // Update listedMovie
   Models.ListedMovie.update(
-    { title, released, genre, director, duration, img },
+    { userId, movieId },
     { where: { id: listedMovieId } }
   )
     .then(([affectedRows]) => {
       if (affectedRows > 0) {
         res
           .status(200)
-          .json({ result: `ListedMovie with ID ${listedMovieId} updated successfully!` });
+          .json({
+            result: `ListedMovie with ID ${listedMovieId} updated successfully!`,
+          });
       } else {
         res.status(404).json({ result: "ListedMovie not found" });
       }
@@ -154,7 +167,9 @@ const deleteListedMovie = (req, res) => {
       if (deletedRows > 0) {
         res
           .status(200)
-          .json({ result: `ListedMovie with ID ${listedMovieId} deleted successfully!` });
+          .json({
+            result: `ListedMovie with ID ${listedMovieId} deleted successfully!`,
+          });
       } else {
         res.status(404).json({ result: "ListedMovie not found" });
       }
