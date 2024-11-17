@@ -22,6 +22,7 @@ app.use(express.json());
 const userRoutes = require("./routes/userRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const movieRoutes = require("./routes/movieRoutes");
+const listedMovieRoutes = require("./routes/listedMovieRoutes")
 // const landingPostRoutes = require("./routes/landingPostRoutes");
 
 // //ROUTES
@@ -33,6 +34,9 @@ app.use("/reviews", reviewRoutes);
 
 //http://localhost:8083/movies
 app.use("/movies", movieRoutes);
+
+//http://localhost:8083/listedMovieRoutes
+app.use("/listedMovies", listedMovieRoutes)
 
 // //https://localhost:8083/landingPost
 // //landing page posts only

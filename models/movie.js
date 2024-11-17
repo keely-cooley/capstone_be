@@ -14,13 +14,17 @@ Movie.init(
       autoIncrement: true,
       primaryKey: true,
     },
+    imdbID: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
       required: true,
     },
-    released: {
-      type: DataTypes.INTEGER,
+    year: {
+      type: DataTypes.STRING,
       allowNull: false,
       required: true,
     },
@@ -34,8 +38,8 @@ Movie.init(
         allowNull: false,
         required: true,
     },
-    duration: {
-        type: DataTypes.INTEGER,
+    runtime: {
+        type: DataTypes.STRING,
         allowNull: false,
         required: true,
     },

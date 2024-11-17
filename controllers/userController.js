@@ -13,7 +13,7 @@ const loginUser = (req, res) => {
       if (foundUser) {
         //check if password is correct
         if (foundUser.password === password) {
-          res.status(200).json({ result: "success" });
+          res.status(200).json({ result: "success", data: foundUser });
         } else {
           res.status(401).json({ result: "Password is incorrect :(" });
         }
