@@ -44,10 +44,17 @@ listedMovieRouter.put("/:id", (req, res) => {
   Controllers.listedMovieController.updateListedMovie(req, res);
 });
 
+// DELETE ListedMovieByUserIdAndMovieId
+// DELETE http://localhost:8083/listedMovies/userIdAndMovieId
+listedMovieRouter.delete("/userIdAndMovieId", (req, res) => {
+  Controllers.listedMovieController.deleteListedMovieByUserIdAndMovieId(req, res);
+});
+
 // DELETE listedMovie by ID
 // DELETE http://localhost:8083/listedMovies/:id
 listedMovieRouter.delete("/:id", (req, res) => {
   Controllers.listedMovieController.deleteListedMovie(req, res);
 });
+
 
 module.exports = listedMovieRouter;

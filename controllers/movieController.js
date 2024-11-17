@@ -41,51 +41,111 @@ const validateAddMovie = async (req, res) => {
 
   console.log("movieController - validateAddMovie:", id);
 
-  await Models.Movie.findOne({ where: { imdbID: id } })
-    .then(async (movie) => {
-      if (movie) {
-        res.status(200).json(movie);
-      } else {
-        console.log("adding movie");
-        const url = `http://www.omdbapi.com/?i=${id}&apikey=2aa94c15`;
+  try {
+    // Try to find the movie by imdbID
+    const movie = await Models.Movie.findOne({ where: { imdbID: id } });
 
-        const response = await fetch(url);
-        // convert response to JSON
-        const responseJson = await response.json();
+    if (movie) {
+      // If the movie already exists in the database, return it
+      return res.status(200).json({
+        result: `Movie ${movie.title} added successfully!`,
+        data: movie,
+      });
+    } else {
+      // If the movie doesn't exist, fetch movie details from external API
+      console.log("Adding movie");
 
-        const movieToAdd = { 
-          imdbID: responseJson.imdbID,
-          title: responseJson.Title,
-          year: responseJson.Year,
-          genre: responseJson.Genre,
-          director: responseJson.Director,
-          runtime: responseJson.Runtime,
-          img: responseJson.Poster
-        }
-        console.log(movieToAdd);
-    
-        await Models.Movie.create(movieToAdd)
-          .then((newMovie) => {
-            res.status(201).json({
-              result: `Movie ${newMovie.title} added successfully!`,
-              data: newMovie,
-            });
-          })
-          .catch((err) => {
-            console.log("movieController - createMovie:", err);
-            res.status(500).json({
-              result: "Error",
-              error: `Failed to create movie. Error: ${err.message}`,
-            });
-          });
-      
+      const url = `http://www.omdbapi.com/?i=${id}&apikey=2aa94c15`;
+      const response = await fetch(url);
+      const responseJson = await response.json();
+
+      const movieToAdd = {
+        imdbID: responseJson.imdbID,
+        title: responseJson.Title,
+        year: responseJson.Year,
+        genre: responseJson.Genre,
+        director: responseJson.Director,
+        runtime: responseJson.Runtime,
+        img: responseJson.Poster,
+      };
+
+      console.log("validateAddMovie - movieToAdd:", movieToAdd);
+
+      try {
+        // Create a new movie record in the database
+        const newMovie = await Models.Movie.create(movieToAdd);
+
+        // Respond with a success message and the newly created movie data
+        return res.status(201).json({
+          result: `Movie ${newMovie.title} added successfully!`,
+          data: newMovie,
+        });
+      } catch (err) {
+        // Handle any error while creating the movie
+        console.log("movieController - createMovie:", err);
+        return res.status(500).json({
+          result: "Error",
+          error: `Failed to create movie. Error: ${err.message}`,
+        });
       }
-    })
-    .catch((err) => {
-      console.log("movieController - validateAddMovie:", err);
-      res.status(500).json({ result: "Error", error: err.message });
-    });
+    }
+  } catch (err) {
+    // Handle any error that occurred during the process
+    console.log("movieController - validateAddMovie:", err);
+    return res.status(500).json({ result: "Error", error: err.message });
+  }
 };
+
+// const validateAddMovie = async (req, res) => {
+//   const id = req.params.id;
+
+//   console.log("movieController - validateAddMovie:", id);
+
+//   await Models.Movie.findOne({ where: { imdbID: id } })
+//     .then(async (movie) => {
+//       if (movie) {
+//         res.status(200).json(movie);
+//       } else {
+//         console.log("adding movie");
+//         const url = `http://www.omdbapi.com/?i=${id}&apikey=2aa94c15`;
+
+//         const response = await fetch(url);
+//         // convert response to JSON
+//         const responseJson = await response.json();
+
+//         const movieToAdd = { 
+//           imdbID: responseJson.imdbID,
+//           title: responseJson.Title,
+//           year: responseJson.Year,
+//           genre: responseJson.Genre,
+//           director: responseJson.Director,
+//           runtime: responseJson.Runtime,
+//           img: responseJson.Poster
+//         }
+//         console.log("validateAddMovie - movieToAdd:", movieToAdd);
+    
+//         await Models.Movie.create(movieToAdd)
+//           .then((newMovie) => {
+//             res.status(201).json({
+//               result: `Movie ${newMovie.title} added successfully!`,
+//               data: newMovie,
+//             });
+//           })
+//           .catch((err) => {
+//             console.log("movieController - createMovie:", err);
+//             res.status(500).json({
+//               result: "Error",
+//               error: `Failed to create movie. Error: ${err.message}`,
+//             });
+//           });
+      
+//       }
+//     })
+//     .catch((err) => {
+//       console.log("movieController - validateAddMovie:", err);
+//       res.status(500).json({ result: "Error", error: err.message });
+//     });
+// };
 
 // GET movie by title
 const getMovieDetailsByTitle = (req, res) => {

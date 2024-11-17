@@ -1,5 +1,6 @@
 "use strict";
 const Models = require("../models");
+const { Op } = require('sequelize');
 
 // GET all listedMovies
 const getListedMovies = (req, res) => {
@@ -211,6 +212,42 @@ const deleteListedMovie = (req, res) => {
     });
 };
 
+// DELETE listedMovie by ID
+const deleteListedMovieByUserIdAndMovieId = (req, res) => {
+  const userId = parseInt(req.body.userId)
+  const movieId = parseInt(req.body.movieId)
+
+  console.log("listedMovieController - deleteListedMovieByUserIdAndMovieId:", req.body);
+
+  // Delete listedMovie
+  Models.ListedMovie.destroy({
+    where: {
+      userId: {
+        [Op.eq]: userId,
+      },
+      movieId: {
+        [Op.eq]: movieId,
+      },
+    },
+  })
+    .then((deletedRows) => {
+      if (deletedRows > 0) {
+        res.status(200).json({
+          result: `ListedMovie with ID ${movieId} deleted successfully!`,
+        });
+      } else {
+        res.status(404).json({ result: "ListedMovie not found" });
+      }
+    })
+    .catch((err) => {
+      console.log("listedMovieController - deleteListedMovie:", err);
+      res.status(500).json({
+        result: "Error",
+        error: `Failed to delete listedMovie. Error: ${err.message}`,
+      });
+    });
+};
+
 module.exports = {
   getListedMovies,
   getListedMovieDetailsById,
@@ -220,4 +257,5 @@ module.exports = {
   createListedMovie,
   updateListedMovie,
   deleteListedMovie,
+  deleteListedMovieByUserIdAndMovieId,
 };
