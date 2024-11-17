@@ -61,19 +61,6 @@ const getListedMovieDetailsByUserId = async (req, res) => {
     console.log("listedMovieController - get all listed movies by user id:", error);
     return res.status(500).json({ result: "Error", error: error.message });
   }
-
-  // // Models.ListedMovie.findAll({ where: { userId: listedMovieUserId } })
-  // //   .then((listedMovies) => {
-  //     if (listedMovies) {
-  //       res.status(200).json(listedMovies);
-  //     } else {
-  //       res.status(404).json({ result: "ListedMovie not found" });
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     console.log("listedMovieController - getListedMovieDetailsById:", err);
-  //     res.status(500).json({ result: "Error", error: err.message });
-    // });
 };
 
 // GET listedMovie by title
