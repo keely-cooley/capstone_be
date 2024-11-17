@@ -33,7 +33,7 @@ SeenMovie.init(
   },
   {
     sequelize: sequelizeInstance,
-    modelName: "listedMovies", //lowercase plural
+    modelName: "seenMovies", //lowercase plural
     timestamps: true,
     freezeTableName: true,
   }
