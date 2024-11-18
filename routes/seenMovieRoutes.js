@@ -44,6 +44,12 @@ seenMovieRouter.put("/:id", (req, res) => {
   Controllers.seenMovieController.updateSeenMovie(req, res);
 });
 
+// DELETE SeenMovieByUserIdAndMovieId
+// DELETE http://localhost:8083/seenMovies/userIdAndMovieId
+seenMovieRouter.delete("/userIdAndMovieId", (req, res) => {
+  Controllers.seenMovieController.deleteSeenMovieByUserIdAndMovieId(req, res);
+});
+
 // DELETE seenMovie by ID
 // DELETE http://localhost:8083/seenMovies/:id
 seenMovieRouter.delete("/:id", (req, res) => {

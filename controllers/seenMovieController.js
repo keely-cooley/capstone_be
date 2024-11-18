@@ -1,5 +1,6 @@
 "use strict";
 const Models = require("../models");
+const { Op } = require('sequelize');
 
 // GET all seenMovies
 const getSeenMovies = (req, res) => {
