@@ -96,57 +96,6 @@ const validateAddMovie = async (req, res) => {
   }
 };
 
-// const validateAddMovie = async (req, res) => {
-//   const id = req.params.id;
-
-//   console.log("movieController - validateAddMovie:", id);
-
-//   await Models.Movie.findOne({ where: { imdbID: id } })
-//     .then(async (movie) => {
-//       if (movie) {
-//         res.status(200).json(movie);
-//       } else {
-//         console.log("adding movie");
-//         const url = `http://www.omdbapi.com/?i=${id}&apikey=2aa94c15`;
-
-//         const response = await fetch(url);
-//         // convert response to JSON
-//         const responseJson = await response.json();
-
-//         const movieToAdd = { 
-//           imdbID: responseJson.imdbID,
-//           title: responseJson.Title,
-//           year: responseJson.Year,
-//           genre: responseJson.Genre,
-//           director: responseJson.Director,
-//           runtime: responseJson.Runtime,
-//           img: responseJson.Poster
-//         }
-//         console.log("validateAddMovie - movieToAdd:", movieToAdd);
-    
-//         await Models.Movie.create(movieToAdd)
-//           .then((newMovie) => {
-//             res.status(201).json({
-//               result: `Movie ${newMovie.title} added successfully!`,
-//               data: newMovie,
-//             });
-//           })
-//           .catch((err) => {
-//             console.log("movieController - createMovie:", err);
-//             res.status(500).json({
-//               result: "Error",
-//               error: `Failed to create movie. Error: ${err.message}`,
-//             });
-//           });
-      
-//       }
-//     })
-//     .catch((err) => {
-//       console.log("movieController - validateAddMovie:", err);
-//       res.status(500).json({ result: "Error", error: err.message });
-//     });
-// };
-
 // GET movie by title
 const getMovieDetailsByTitle = (req, res) => {
   const movieTitle = req.params.title;
