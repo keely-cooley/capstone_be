@@ -47,42 +47,6 @@ const getReviews = async (req, res) => {
   }
 };
 
-// const getReviews = async (req, res) => {
-//   console.log("reviewController - getReviews");
-
-//   Models.Review.findAll()
-//     .then(async (reviews) => {
-//       let updatedReviews = [];
-
-//       await Promise.all(
-//         reviews.forEach((element) => {
-//           // console.log(element.userId)
-//           Models.User.findOne({ where: { id: element.userId } })
-//             .then((user) => {
-//               if (user) {
-//                 let updatedReview = {
-//                   ...element,
-//                   username: user.username,
-//                 };
-//                 updatedReviews.push(updatedReview);
-//               } else {
-//                 res.status(404).json({ result: "User not found" });
-//               }
-//             })
-//             .catch((err) => {
-//               console.log("reviewController - getUserById:", err);
-//               res.status(500).json({ result: "Error", error: err.message });
-//             });
-//         })
-//       )
-//       res.status(200).json(updatedReviews);
-//     })
-//     .catch((err) => {
-//       console.log("reviewController - getReviews:", err);
-//       res.status(500).json({ result: "Error", error: err.message });
-//     });
-// };
-
 // GET review by ID
 const getReviewById = (req, res) => {
   const reviewId = parseInt(req.params.id);
