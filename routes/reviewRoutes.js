@@ -3,19 +3,32 @@ const reviewRouter = express.Router();
 const reviewController = require("../controllers/reviewController");
 // const review = require("../libraries/reviewLibrary")
 
-// //http://localhost:8083/reviews
-// //all reviews
+// http://localhost:8083/reviews/movie/id/:id
+//get all reviews with declared movie id
+reviewRouter.get("/movie/id/:id", (req, res) => {
+  reviewController.getReviewsByMovieId(req, res);
+});
+
+// http://localhost:8083/reviews/user/id/:id
+//get all reviews with declared user id
+reviewRouter.get("/user/id/:id", (req, res) => {
+  reviewController.getReviewsByUserId(req, res);
+});
+
+//http://localhost:8083/reviews
+//all reviews
 reviewRouter.get("/", (req, res) => {
   reviewController.getReviews(req, res);
 });
-// //http://localhost:8083/reviews/:id
-// //review by id
+
+//http://localhost:8083/reviews/:id
+//get review by id
 reviewRouter.get("/:id", (req, res) => {
   reviewController.getReviewById(req, res);
 });
 
-// //http://localhost:8083/reviews/new
-//create new review
+//http://localhost:8083/reviews/new
+// create new review
 reviewRouter.post("/new", (req, res) => {
   console.log("reviewRouter.review:", req.body);
   reviewController.postReview(req, res);
