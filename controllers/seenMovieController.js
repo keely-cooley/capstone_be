@@ -1,5 +1,6 @@
 "use strict";
 const Models = require("../models");
+const { Op } = require('sequelize');
 
 // GET all seenMovies
 const getSeenMovies = (req, res) => {
@@ -40,8 +41,10 @@ const getSeenMovieDetailsByUserId = async (req, res) => {
   const seenMovieUserId = parseInt(req.params.id);
 
   console.log("seenMovieController - getSeenMovieDetailsByUserId:", req.params);
-  try{
-    const seenMovies = await Models.SeenMovie.findAll({ where: { userId: seenMovieUserId } })
+  try {
+    const seenMovies = await Models.SeenMovie.findAll({
+      where: { userId: seenMovieUserId },
+    });
     let movieDetails = [];
     for (const element of seenMovies) {
       try {
@@ -49,7 +52,7 @@ const getSeenMovieDetailsByUserId = async (req, res) => {
           where: { id: element.movieId },
         });
         if (movie) {
-          movieDetails.push(movie.toJSON())
+          movieDetails.push(movie.toJSON());
         }
       } catch (error) {
         console.log("seenMovieController - getMovieById:", error);
@@ -67,10 +70,7 @@ const getSeenMovieDetailsByUserId = async (req, res) => {
 const getSeenMovieDetailsByTitle = (req, res) => {
   const seenMovieTitle = req.params.title;
 
-  console.log(
-    "seenMovieController - getSeenMovieDetailsByTitle:",
-    req.params
-  );
+  console.log("seenMovieController - getSeenMovieDetailsByTitle:", req.params);
 
   Models.SeenMovie.findOne({ where: { title: seenMovieTitle } })
     .then((seenMovie) => {
@@ -106,10 +106,7 @@ const getSeenMovieDetailsByDirector = (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(
-        "seenMovieController - getSeenMovieDetailsByDirector:",
-        err
-      );
+      console.log("seenMovieController - getSeenMovieDetailsByDirector:", err);
       res.status(500).json({ result: "Error", error: err.message });
     });
 };
@@ -159,17 +156,12 @@ const updateSeenMovie = (req, res) => {
   }
 
   // Update seenMovie
-  Models.SeenMovie.update(
-    { userId, movieId },
-    { where: { id: seenMovieId } }
-  )
+  Models.SeenMovie.update({ userId, movieId }, { where: { id: seenMovieId } })
     .then(([affectedRows]) => {
       if (affectedRows > 0) {
-        res
-          .status(200)
-          .json({
-            result: `SeenMovie with ID ${seenMovieId} updated successfully!`,
-          });
+        res.status(200).json({
+          result: `SeenMovie with ID ${seenMovieId} updated successfully!`,
+        });
       } else {
         res.status(404).json({ result: "SeenMovie not found" });
       }
@@ -193,11 +185,48 @@ const deleteSeenMovie = (req, res) => {
   Models.SeenMovie.destroy({ where: { id: seenMovieId } })
     .then((deletedRows) => {
       if (deletedRows > 0) {
-        res
-          .status(200)
-          .json({
-            result: `SeenMovie with ID ${seenMovieId} deleted successfully!`,
-          });
+        res.status(200).json({
+          result: `SeenMovie with ID ${seenMovieId} deleted successfully!`,
+        });
+      } else {
+        res.status(404).json({ result: "SeenMovie not found" });
+      }
+    })
+    .catch((err) => {
+      console.log("seenMovieController - deleteSeenMovie:", err);
+      res.status(500).json({
+        result: "Error",
+        error: `Failed to delete seenMovie. Error: ${err.message}`,
+      });
+    });
+};
+
+// DELETE seenMovie by userId and movieId
+const deleteSeenMovieByUserIdAndMovieId = (req, res) => {
+  const userId = parseInt(req.body.userId);
+  const movieId = parseInt(req.body.movieId);
+
+  console.log(
+    "listedMovieController - deleteListedMovieByUserIdAndMovieId:",
+    req.body
+  );
+
+  // Delete listedMovie
+  Models.SeenMovie.destroy({
+    where: {
+      userId: {
+        [Op.eq]: userId,
+      },
+      movieId: {
+        [Op.eq]: movieId,
+      },
+    },
+  })
+    .then((deletedRows) => {
+      if (deletedRows > 0) {
+        res.status(200).json({
+          result: `SeenMovie with ID ${movieId} deleted successfully!`,
+        });
       } else {
         res.status(404).json({ result: "SeenMovie not found" });
       }
@@ -220,4 +249,5 @@ module.exports = {
   createSeenMovie,
   updateSeenMovie,
   deleteSeenMovie,
+  deleteSeenMovieByUserIdAndMovieId,
 };

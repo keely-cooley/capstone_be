@@ -48,8 +48,16 @@ const signupUser = (req, res) => {
           // welcome message to greet on successful signup
           res.status(201).json({
             result: `Welcome to Cinnefiles, ${newUser.username}!`,
-            data: newUser,
+            data: {
+              id: newUser.id,
+              username: newUser.username,
+              email: newUser.email,
+            },
           });
+          console.log(
+            "userController.js -> create new user -> New user created: ",
+            newUser
+          );
         })
         .catch((err) => {
           console.log("userController - signupUser:", err);
@@ -67,7 +75,6 @@ const signupUser = (req, res) => {
       });
     });
 };
-
 //GET all users from database
 const getAllUsers = (req, res) => {
   console.log("userController - getAllUsers");
