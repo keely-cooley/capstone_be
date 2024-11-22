@@ -39,10 +39,19 @@ const getListedMovieDetailsById = (req, res) => {
 // GET listedMovie by userId
 const getListedMovieDetailsByUserId = async (req, res) => {
   const listedMovieUserId = parseInt(req.params.id);
+  // Validate userId
+  if (!listedMovieUserId || isNaN(listedMovieUserId)) {
+    return res.status(400).json({ error: "Invalid userId" });
+  }
 
-  console.log("listedMovieController - getListedMovieDetailsByUserId:", req.params);
-  try{
-    const listedMovies = await Models.ListedMovie.findAll({ where: { userId: listedMovieUserId } })
+  console.log(
+    "listedMovieController - getListedMovieDetailsByUserId:",
+    req.params
+  );
+  try {
+    const listedMovies = await Models.ListedMovie.findAll({
+      where: { userId: listedMovieUserId },
+    });
     let movieDetails = [];
     for (const element of listedMovies) {
       try {
@@ -50,7 +59,7 @@ const getListedMovieDetailsByUserId = async (req, res) => {
           where: { id: element.movieId },
         });
         if (movie) {
-          movieDetails.push(movie.toJSON())
+          movieDetails.push(movie.toJSON());
         }
       } catch (error) {
         console.log("listedMovieController - getMovieById:", error);
@@ -59,7 +68,10 @@ const getListedMovieDetailsByUserId = async (req, res) => {
     }
     res.status(200).json(movieDetails);
   } catch (error) {
-    console.log("listedMovieController - get all listed movies by user id:", error);
+    console.log(
+      "listedMovieController - get all listed movies by user id:",
+      error
+    );
     return res.status(500).json({ result: "Error", error: error.message });
   }
 };
