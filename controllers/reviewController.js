@@ -47,42 +47,6 @@ const getReviews = async (req, res) => {
   }
 };
 
-// const getReviews = async (req, res) => {
-//   console.log("reviewController - getReviews");
-
-//   Models.Review.findAll()
-//     .then(async (reviews) => {
-//       let updatedReviews = [];
-
-//       await Promise.all(
-//         reviews.forEach((element) => {
-//           // console.log(element.userId)
-//           Models.User.findOne({ where: { id: element.userId } })
-//             .then((user) => {
-//               if (user) {
-//                 let updatedReview = {
-//                   ...element,
-//                   username: user.username,
-//                 };
-//                 updatedReviews.push(updatedReview);
-//               } else {
-//                 res.status(404).json({ result: "User not found" });
-//               }
-//             })
-//             .catch((err) => {
-//               console.log("reviewController - getUserById:", err);
-//               res.status(500).json({ result: "Error", error: err.message });
-//             });
-//         })
-//       )
-//       res.status(200).json(updatedReviews);
-//     })
-//     .catch((err) => {
-//       console.log("reviewController - getReviews:", err);
-//       res.status(500).json({ result: "Error", error: err.message });
-//     });
-// };
-
 // GET review by ID
 const getReviewById = (req, res) => {
   const reviewId = parseInt(req.params.id);
@@ -101,6 +65,105 @@ const getReviewById = (req, res) => {
       res.status(500).json({ result: "Error", error: err.message });
     });
 };
+
+// GET reviews by movie ID
+const getReviewsByMovieId = (req, res) => {
+  const movieId = parseInt(req.params.id); 
+
+  console.log("reviewController - getReviewsByMovieId:", req.params);
+
+  Models.Review.findAll({
+    where: { movieId: movieId } 
+  })
+    .then((reviews) => {
+      if (reviews.length > 0) {
+        res.status(200).json(reviews);
+      } else {
+        res.status(200).json([]);
+      }
+    })
+    .catch((err) => {
+      console.log("reviewController - getReviewsByMovieId:", err);
+      res.status(500).json({ result: "Error", error: err.message });
+    });
+};
+
+// GET reviews by user ID
+const getReviewsByUserId = (req, res) => {
+  const userId = parseInt(req.params.id); 
+
+  console.log("reviewController - getReviewsByUserId:", req.params);
+
+  Models.Review.findAll({
+    where: { userId: userId } 
+  })
+    .then((reviews) => {
+      if (reviews.length > 0) {
+        res.status(200).json(reviews);
+      } else {
+        res.status(200).json([]);
+      }
+    })
+    .catch((err) => {
+      console.log("reviewController - getReviewsByUserId:", err);
+      res.status(500).json({ result: "Error", error: err.message });
+    });
+};
+
+// GET reviews by user ID
+const getReviewsAndMovieTitlesByUserId = async (req, res) => {
+  const userId = parseInt(req.params.id); 
+
+  try {
+    const userReviews = await Models.Review.findAll({
+      where: { userId: userId },
+    })
+    let reviewsWithMovieTitles = [];
+    for (const element of userReviews) {
+      try {
+        const movie = await Models.Movie.findOne({
+          where: { id: element.movieId },
+        });
+        if (movie) {
+          const parsedMovie = await movie.toJSON();
+          const newReview = {
+            ...element.get({ plain: true }),
+            movieTitle: parsedMovie.title,
+            movieId: parsedMovie.id,
+          }
+          reviewsWithMovieTitles.push(newReview);
+        }
+      } catch (error) {
+        console.log("listedMovieController - getMovieById:", error);
+        return res.status(500).json({ result: "Error", error: error.message });
+      }
+    }
+    res.status(200).json(reviewsWithMovieTitles)
+  } catch (error) {
+    console.log(
+      "reviewController - get all reviews with movie titles:", error
+    );
+    return res.status(500).json({ result: "Error", error: error.message });
+  }
+
+  // console.log("reviewController - getReviewsByUserId:", req.params);
+
+  // Models.Review.findAll({
+  //   where: { userId: userId } 
+  // })
+  //   .then((reviews) => {
+  //     if (reviews.length > 0) {
+  //       res.status(200).json(reviews);
+  //     } else {
+  //       res.status(200).json([]);
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.log("reviewController - getReviewsByUserId:", err);
+  //     res.status(500).json({ result: "Error", error: err.message });
+//    });
+};
+
 
 // POST create a new review
 const postReview = (req, res) => {
@@ -192,6 +255,9 @@ const deleteReview = (req, res) => {
 module.exports = {
   getReviews,
   getReviewById,
+  getReviewsByMovieId,
+  getReviewsAndMovieTitlesByUserId,
+  getReviewsByUserId,
   postReview,
   updateReview,
   deleteReview,
