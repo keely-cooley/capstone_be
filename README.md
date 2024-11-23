@@ -25,7 +25,7 @@ Follow these steps to run Cinnefiles on your computer
   ```sh
   npm install
   ```
-3.Add the .env file
+3. Add the .env file
   ```sh
 DB_NAME=capstone
 DB_USER=root
