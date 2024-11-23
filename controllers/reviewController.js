@@ -146,22 +146,22 @@ const getReviewsAndMovieTitlesByUserId = async (req, res) => {
     return res.status(500).json({ result: "Error", error: error.message });
   }
 
-  console.log("reviewController - getReviewsByUserId:", req.params);
+  // console.log("reviewController - getReviewsByUserId:", req.params);
 
-  Models.Review.findAll({
-    where: { userId: userId } 
-  })
-    .then((reviews) => {
-      if (reviews.length > 0) {
-        res.status(200).json(reviews);
-      } else {
-        res.status(200).json([]);
-      }
-    })
-    .catch((err) => {
-      console.log("reviewController - getReviewsByUserId:", err);
-      res.status(500).json({ result: "Error", error: err.message });
-    });
+  // Models.Review.findAll({
+  //   where: { userId: userId } 
+  // })
+  //   .then((reviews) => {
+  //     if (reviews.length > 0) {
+  //       res.status(200).json(reviews);
+  //     } else {
+  //       res.status(200).json([]);
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.log("reviewController - getReviewsByUserId:", err);
+  //     res.status(500).json({ result: "Error", error: err.message });
+//    });
 };
 
 
