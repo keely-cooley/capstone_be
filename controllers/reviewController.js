@@ -110,6 +110,60 @@ const getReviewsByUserId = (req, res) => {
     });
 };
 
+// GET reviews by user ID
+const getReviewsAndMovieTitlesByUserId = async (req, res) => {
+  const userId = parseInt(req.params.id); 
+
+  try {
+    const userReviews = await Models.Review.findAll({
+      where: { userId: userId },
+    })
+    let reviewsWithMovieTitles = [];
+    for (const element of userReviews) {
+      try {
+        const movie = await Models.Movie.findOne({
+          where: { id: element.movieId },
+        });
+        if (movie) {
+          const parsedMovie = await movie.toJSON();
+          const newReview = {
+            ...element.get({ plain: true }),
+            movieTitle: parsedMovie.title,
+            movieId: parsedMovie.id,
+          }
+          reviewsWithMovieTitles.push(newReview);
+        }
+      } catch (error) {
+        console.log("listedMovieController - getMovieById:", error);
+        return res.status(500).json({ result: "Error", error: error.message });
+      }
+    }
+    res.status(200).json(reviewsWithMovieTitles)
+  } catch (error) {
+    console.log(
+      "reviewController - get all reviews with movie titles:", error
+    );
+    return res.status(500).json({ result: "Error", error: error.message });
+  }
+
+  console.log("reviewController - getReviewsByUserId:", req.params);
+
+  Models.Review.findAll({
+    where: { userId: userId } 
+  })
+    .then((reviews) => {
+      if (reviews.length > 0) {
+        res.status(200).json(reviews);
+      } else {
+        res.status(200).json([]);
+      }
+    })
+    .catch((err) => {
+      console.log("reviewController - getReviewsByUserId:", err);
+      res.status(500).json({ result: "Error", error: err.message });
+    });
+};
+
 
 // POST create a new review
 const postReview = (req, res) => {
@@ -202,6 +256,7 @@ module.exports = {
   getReviews,
   getReviewById,
   getReviewsByMovieId,
+  getReviewsAndMovieTitlesByUserId,
   getReviewsByUserId,
   postReview,
   updateReview,

@@ -15,6 +15,12 @@ reviewRouter.get("/user/id/:id", (req, res) => {
   reviewController.getReviewsByUserId(req, res);
 });
 
+// http://localhost:8083/reviews/userwithreviewsandmovietitles/id/:id
+//get all reviews and movie titles with declared user id
+reviewRouter.get("/userwithreviewsandmovietitles/id/:id", (req, res) => {
+  reviewController.getReviewsAndMovieTitlesByUserId(req, res);
+});
+
 //http://localhost:8083/reviews
 //all reviews
 reviewRouter.get("/", (req, res) => {
